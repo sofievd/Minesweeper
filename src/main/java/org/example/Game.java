@@ -31,7 +31,7 @@ public class Game {
     private List<Cell> createCells(){
         for(int i = 0; i < ROW; i++){
             for(int j = 0; j< COLUMN; j++){
-                int index = ((i+1)*i)+j;
+                int index = (i *10 )+j;
                 Cell cell = new Cell(i,j, index);
                 allCells.add(cell);
             }
@@ -71,4 +71,7 @@ public class Game {
         return mineCells;
     }
 
+    public int getNUM_OF_MINES() {
+        return NUM_OF_MINES;
+    }
 }

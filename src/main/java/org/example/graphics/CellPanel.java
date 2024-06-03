@@ -11,12 +11,17 @@ public class CellPanel  extends JPanel {
         Border greyLine = BorderFactory.createLineBorder(Color.GRAY);
         this.setBorder(greyLine);
         this.index = index;
+//        JTextArea indexNum = new JTextArea(""+index);
+//        indexNum.setEditable(false);
+//        this.add(indexNum);
     }
     public void addMine(){
         JTextArea mine = new JTextArea("M");
-        mine.setBackground(Color.WHITE);
         mine.setEditable(false);
+        this.add(mine);
     }
+
+
 
     public int getIndex() {
         return index;

@@ -10,7 +10,7 @@ public class Cell extends JPanel{
    private boolean flagged;
     private boolean mine;
     private int numOfNeighbourMines;
-     int INDEX;
+    int INDEX;
 
     public Cell(){
     }
@@ -77,5 +77,13 @@ public class Cell extends JPanel{
 
     public void setNumOfNeighbourMines(int numOfNeighbourMines) {
         this.numOfNeighbourMines = numOfNeighbourMines;
+    }
+
+    public int getINDEX() {
+        return INDEX;
+    }
+
+    public void setINDEX(int INDEX) {
+        this.INDEX = INDEX;
     }
 }
