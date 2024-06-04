@@ -26,7 +26,7 @@ public class GamePanel extends JPanel {
     private void createGamePanel() {
         createGrid();
         setMinesInGrid();
-        // setMines();
+        setNeighbourghs();
     }
 
     /*public void gridHolder(){
@@ -60,7 +60,7 @@ public class GamePanel extends JPanel {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                int index = (i *10) + j;
+                int index = (i * rows) + j;
                 gridHolder[i][j] = new CellPanel(index);
                 add(gridHolder[i][j]);
                 cellPanelList.add(gridHolder[i][j]);
@@ -79,23 +79,18 @@ public class GamePanel extends JPanel {
                 }
             }
         }
-        //TODO: make sure all the mines are set out, not only 1.
-/*
-        for (int i = 0; i < mineCells.size(); i++) {
-            int row = mineCells.get(i).getRowNum();
-            int column = mineCells.get(i).getColumnNum();
-            gridHolder[row][column].add(mine);
-
-        }*/
-
-//        gridHolde[1][2].add(mine);
-//        gridHolde[3][9].add(mine);
-//        gridHolde[0][0].add(mine);
 
     }
 
-    private void setMines() {
-
+    private void setNeighbourghs() {
+        List<Cell> allCells = MINESWEEPER.getAllCells();
+        for (int i = 0; i < cellPanelList.size(); i++) {
+            for (int j = 0; j < allCells.size(); j++) {
+                if (allCells.get(j).getINDEX() == cellPanelList.get(i).getIndex()) {
+                    cellPanelList.get(i).setOutNeigh(allCells.get(j));
+                }
+            }
+        }
     }
 
 }
