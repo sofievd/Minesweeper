@@ -3,7 +3,7 @@ package org.example;
 import javax.swing.*;
 import java.awt.*;
 
-public class Cell extends JPanel{
+public class Cell {
    private int rowNum;
    private int columnNum;
    private boolean seen;
@@ -21,16 +21,6 @@ public class Cell extends JPanel{
         INDEX= index;
 
     }
-    public void createCell(){
-        this.setBackground(Color.LIGHT_GRAY);
-        JTextField mine = new JTextField();
-        mine.setText("M");
-        mine.setEditable(false);
-        if(isMine()){
-            this.add(mine);
-        }
-    }
-
     public int getRowNum() {
         return rowNum;
     }
