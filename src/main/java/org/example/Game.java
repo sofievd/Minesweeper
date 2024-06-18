@@ -22,7 +22,7 @@ public class Game {
     }
 
     public Game() {
-        NUM_OF_MINES = 7;
+        NUM_OF_MINES = 3;
         ROW = 10;
         COLUMN = 10;
         createCells();
@@ -87,7 +87,7 @@ public class Game {
                 setNeighbeourghMines(index - COLUMN);
                 setNeighbeourghMines(index - COLUMN + 1);
             }
-            // check the sides( top and bottom
+            // check the sides( top and bottom)
 
             else if (index > 0 && index < ROW - 1) {
                 setNeighbeourghMines(index-1);
