@@ -13,7 +13,6 @@ import java.util.List;
 public class GamePanel extends JPanel implements MouseListener {
     private int rows;
     private int columns;
-    private final int CELL_SIZE = 40;
     private final Game MINESWEEPER;
     private List<CellPanel> cellPanelList = new ArrayList<>();
 
@@ -21,12 +20,10 @@ public class GamePanel extends JPanel implements MouseListener {
         MINESWEEPER = game;
         this.rows = game.ROW;
         this.columns = game.COLUMN;
-
         createGamePanel();
     }
 
     private void createGamePanel() {
-
         this.addMouseListener(this);
         createGrid();
         setMinesInGrid();
@@ -46,21 +43,19 @@ public class GamePanel extends JPanel implements MouseListener {
 
             }
         }
-
     }
-
     private void setMinesInGrid() {
         List<Cell> mineCells = MINESWEEPER.getMineCells();
         for (int i = 0; i < cellPanelList.size(); i++) {
             for (int j = 0; j < mineCells.size(); j++) {
                 if (mineCells.get(j).getINDEX() == cellPanelList.get(i).getIndex()) {
-                    cellPanelList.get(i).addMine();
+                    cellPanelList.get(i).setMine(true);
+                    cellPanelList.get(i).addMineinFiled();
                 }
             }
         }
 
     }
-
     private void setNeighbourghs() {
         List<Cell> allCells = MINESWEEPER.getAllCells();
         for (int i = 0; i < cellPanelList.size(); i++) {
@@ -72,9 +67,25 @@ public class GamePanel extends JPanel implements MouseListener {
         }
     }
 
-    private void setFlag(CellPanel panel) {
+    private void editFlag(CellPanel panel) {
+
+        List<Cell> allCells = MINESWEEPER.getAllCells();
+        int index = panel.getIndex();
+
         System.out.println(panel.getIndex());
-        panel.setFlag();
+        for(int i = 0; i<allCells.size(); i++){
+            if(allCells.get(i).getINDEX() == index && !allCells.get(i).isFlagged()){
+                allCells.get(i).setFlagged(true);
+                panel.setFlag();
+                break;
+            }
+           else if(allCells.get(i).getINDEX() == index && allCells.get(i).isFlagged()){
+                allCells.get(i).setFlagged(false);
+                panel.removeFlag();
+                break;
+            }
+        }
+        //panel.setFlag();
     }
 
     private void showCell(CellPanel panel) {
@@ -95,7 +106,6 @@ public class GamePanel extends JPanel implements MouseListener {
             }
         }
     }
-
     private void showMultipleCells(Cell cell) {
         int index = cell.getINDEX();
         // make cell visible
@@ -104,9 +114,9 @@ public class GamePanel extends JPanel implements MouseListener {
         List<Cell> cellsToSetVisible = checkBounds(index);
 
         //check bounds and surounding cells, add to a list;
-        //  bounds check
-        // not mine, and  <= 0;
-        // not been seen
+            //  bounds check
+            // not mine, and  <= 0;
+            // not been seen
         // go throught the list and for each item check the surounding cells ( add to list)  and set visible
         // repeat until the list is empty
 
@@ -117,11 +127,8 @@ public class GamePanel extends JPanel implements MouseListener {
             setCellVisable(currentCell);
             cellsToSetVisible.addAll(checkBounds(cellIndex));
         }
-
     }
-
     private List<Cell> checkBounds(int index) {
-
         //  bounds check
         // not mine, and  <= 0;
         // not been seen
@@ -198,8 +205,6 @@ public class GamePanel extends JPanel implements MouseListener {
         }
         return returnList;
     }
-
-
     private void setCellVisable(Cell cell) {
         int index = cell.getINDEX();
         for (int i = 0; i < cellPanelList.size(); i++) {
@@ -208,7 +213,6 @@ public class GamePanel extends JPanel implements MouseListener {
             }
         }
     }
-
     private void endOfGame() {
         for (CellPanel panel : cellPanelList) {
             panel.setNumCellvisible();
@@ -226,20 +230,15 @@ public class GamePanel extends JPanel implements MouseListener {
                 }
             }
 
-        } else if (e.getButton() == 3) {
+        }
+        if (e.getButton() == 3) {
             for (int i = 0; i < cellPanelList.size(); i++) {
                 if (cellPanelList.get(i).getBounds().contains(e.getPoint())) {
-                    setFlag(cellPanelList.get(i));
+                    editFlag(cellPanelList.get(i));
                 }
             }
 
         }
-       /* for(int i = 0; i < cellPanelList.size(); i++){
-            if (cellPanelList.get(i).getBounds().contains(e.getPoint())){
-                System.out.println(e.getButton());
-                System.out.println(cellPanelList.get(i).getIndex());
-            }
-        }*/
     }
 
     @Override
