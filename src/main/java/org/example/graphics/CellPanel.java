@@ -8,13 +8,17 @@ import java.awt.*;
 
 public class CellPanel extends JPanel {
     int index;
-    private final JTextArea mine = new JTextArea("M");
+    private final JTextArea mineText = new JTextArea("M");
     private JTextArea flag = new JTextArea("F");
     private JTextArea numNeigh;
+    private JTextArea defaultText = new JTextArea("");
+
+    boolean mine;
 
     public CellPanel(int index) {
-        this.setBackground(Color.WHITE);
-        Border greyLine = BorderFactory.createLineBorder(Color.GRAY);
+        this.setBackground(Color.LIGHT_GRAY);
+        setDefaultText();
+        Border greyLine = BorderFactory.createLineBorder(Color.DARK_GRAY);
         this.setBorder(greyLine);
         this.index = index;
         //JTextArea indexNum = new JTextArea(""+index);
@@ -22,16 +26,31 @@ public class CellPanel extends JPanel {
         //this.add(indexNum);
     }
 
-    public void addMine() {
-        mine.setEditable(false);
-        mine.setVisible(true);
-        this.add(mine);
+    private void setDefaultText() {
+        defaultText.setBackground(Color.LIGHT_GRAY);
+        defaultText.setVisible(true);
+        defaultText.setEditable(false);
+        add(defaultText);
+    }
+
+    public boolean isMine() {
+        return mine;
+    }
+
+    public void setMine(boolean mine) {
+        this.mine = mine;
+    }
+
+    public void addMineinFiled() {
+        mineText.setEditable(false);
+        mineText.setVisible(false);
+        this.add(mineText);
     }
 
     public void setOutNeigh(Cell cell) {
         numNeigh = new JTextArea("" + cell.getNumOfNeighbourMines());
         if (cell.getNumOfNeighbourMines() == 0) {
-            numNeigh.setText("0");
+            numNeigh.setText("");
         }
         numNeigh.setEditable(false);
         numNeigh.setVisible(false);
@@ -43,18 +62,37 @@ public class CellPanel extends JPanel {
     }
 
     public void setNumCellvisible() {
+        defaultText.setVisible(false);
+        this.setBackground(Color.WHITE);
+        numNeigh.setBackground(Color.WHITE);
         numNeigh.setVisible(true);
     }
 
     public void setMineVisible() {
-        mine.setForeground(Color.RED);
-        mine.setVisible(true);
+        mineText.setForeground(Color.RED);
+        mineText.setVisible(true);
+
     }
 
     public void setFlag() {
+        this.setBackground(Color.WHITE);
+        //mineText.setVisible(false);
+        defaultText.setVisible(false);
+
+        flag.setBackground(Color.WHITE);
         flag.setEditable(false);
-        flag.setForeground(Color.BLACK);
+        flag.setForeground(Color.green);
+
+        this.add(flag);
         flag.setVisible(true);
-        add(flag);
+        repaint(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+
+    }
+
+    public void removeFlag() {
+        this.setBackground(Color.LIGHT_GRAY);
+        flag.setVisible(false);
+        System.out.println("remove flag");
+        setDefaultText();
     }
 }
