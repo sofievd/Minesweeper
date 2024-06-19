@@ -22,9 +22,9 @@ public class Game {
     }
 
     public Game() {
-        NUM_OF_MINES = 3;
+        NUM_OF_MINES = 10;
         ROW = 10;
-        COLUMN = 10;
+        COLUMN =10;
         createCells();
         createMines();
         setNeighbeourghMines();

@@ -97,18 +97,54 @@ public class GamePanel extends JPanel implements MouseListener {
     }
 
     private void showMultipleCells(Cell cell) {
-        //TODO: make sure the algoritm works.
+        int index = cell.getINDEX();
+        // make cell visible
+        cell.setSeen(true);
+
+        List<Cell> cellsToSetVisible = checkBounds(index);
+
+        //check bounds and surounding cells, add to a list;
+        //  bounds check
+        // not mine, and  <= 0;
+        // not been seen
+        // go throught the list and for each item check the surounding cells ( add to list)  and set visible
+        // repeat until the list is empty
+
+        for (int i = 0; i < cellsToSetVisible.size(); i++) {
+            Cell currentCell = cellsToSetVisible.get(i);
+            int cellIndex = currentCell.getINDEX();
+            currentCell.setSeen(true);
+            setCellVisable(currentCell);
+            cellsToSetVisible.addAll(checkBounds(cellIndex));
+        }
+
+    }
+
+
+   /* private void showMultipleCells(Cell cell) {
         int index = cell.getINDEX();
         List<Cell> allCells = MINESWEEPER.getAllCells();
         List<Integer> listToSetvisible = new ArrayList<>();
+        List<Integer> indexBoundsList = new ArrayList<>();
+
+        //LOOP::
 
         // check the bounds and return a list of indexes within the bounds, and where the neighers are not a mine and bigger than 0;
-        List<Integer> indexBoundsList;
+
         indexBoundsList = checkBounds(index);
+        listToSetvisible.addAll(indexBoundsList);
+
+        List<Integer> indexesToCheck = new ArrayList<>();
+
+        for(int i =0; i< indexBoundsList.size(); i++){
+            if(allCells.get(indexBoundsList.get(i)).getNumOfNeighbourMines()==0){
+                indexesToCheck.add(indexBoundsList,);
+            }
+        }
         // repeat step with each of the items in the list where the neigbourghs are 0, until the list no longer gets any members.
-        while (indexBoundsList.isEmpty()) {
+        while (!indexBoundsList.isEmpty()) {
             // items are added to the list to set visible
-            listToSetvisible.addAll(indexBoundsList);
+
             for (int i = 0; i < indexBoundsList.size(); i++) {
                 if (allCells.get((indexBoundsList.get(i))).getNumOfNeighbourMines() == 0) {
                     List<Integer> tempList = checkBounds(indexBoundsList.get(i));
@@ -118,10 +154,15 @@ public class GamePanel extends JPanel implements MouseListener {
         }
         // set the  list visible
         setCellsVisable(listToSetvisible);
-    }
+    }*/
 
-    private List<Integer> checkBounds(int index) {
-        List<Integer> indexList = new ArrayList<>();
+    private List<Cell> checkBounds(int index) {
+
+        //  bounds check
+        // not mine, and  <= 0;
+        // not been seen
+
+        List<Cell> indexList = new ArrayList<>();
 
         int TL = index - columns - 1;
         int T = index - columns;
@@ -135,60 +176,81 @@ public class GamePanel extends JPanel implements MouseListener {
         //corners
         if (index == 0) {
             int[] topRightCorner = {R, B, BR};
-            indexList.addAll(arrayToList(checkNumNeigh(topRightCorner)));
-            return indexList;
+            return checkNeighNum(topRightCorner);
+            //indexList.addAll(arrayToList(checkNumNeigh(topRightCorner)));
+            //return indexList;
         } else if (index == rows - 1) {
             int[] topRightCorner = {L, BL, B};
-            indexList.addAll(arrayToList(checkNumNeigh(topRightCorner)));
-            return indexList;
+            return checkNeighNum(topRightCorner);
+            // indexList.addAll(arrayToList(checkNumNeigh(topRightCorner)));
+            //return indexList;
 
         } else if (index == columns * rows - 1) {
             int[] bottomRightCorner = {TL, T, L};
-            indexList.addAll(arrayToList(checkNumNeigh(bottomRightCorner)));
-            return indexList;
+            return checkNeighNum(bottomRightCorner);
+            //indexList.addAll(arrayToList(checkNumNeigh(bottomRightCorner)));
+            //return indexList;
 
         } else if (index == columns * (rows - 1)) {
             int[] bottomLeftCorrner = {T, TR, R};
-            indexList.addAll(arrayToList(checkNumNeigh(bottomLeftCorrner)));
-            return indexList;
+            return checkNeighNum(bottomLeftCorrner);
+            //indexList.addAll(arrayToList(checkNumNeigh(bottomLeftCorrner)));
+            //return indexList;
 
         }
         //sides
         else if (index > 0 && index < rows - 1) {
             int[] topSideList = {L, R, BL, B, BR};
-            indexList.addAll(arrayToList(checkNumNeigh(topSideList)));
-            return indexList;
+            return checkNeighNum(topSideList);
+            //indexList.addAll(arrayToList(checkNumNeigh(topSideList)));
+            //return indexList;
         } else if (index > columns * (rows - 1) && index < columns * rows - 1) {
             int[] bottomSideList = {TL, T, TR, L, R};
-            indexList.addAll(arrayToList(checkNumNeigh(bottomSideList)));
-            return indexList;
+            return checkNeighNum(bottomSideList);
+            //indexList.addAll(arrayToList(checkNumNeigh(bottomSideList)));
+            //return indexList;
 
         } else if (index % rows == 0) {
             int[] leftSideList = {T, TR, R, B, BR};
-            indexList.addAll(arrayToList(checkNumNeigh(leftSideList)));
-            return indexList;
+            return checkNeighNum(leftSideList);
+            //indexList.addAll(arrayToList(checkNumNeigh(leftSideList)));
+            //return indexList;
         } else if (index % rows == 9) {
             int[] rightSideList = {T, TL, L, BL, B};
-            indexList.addAll(arrayToList(checkNumNeigh(rightSideList)));
-            return indexList;
+            return checkNeighNum(rightSideList);
+            //indexList.addAll(arrayToList(checkNumNeigh(rightSideList)));
+            //return indexList;
         }
         //all sides
         else {
             int[] list = {T, TL, TR, L, R, BL, B, BR};
-            indexList.addAll(arrayToList(checkNumNeigh(list)));
-            return indexList;
+            return checkNeighNum(list);
+            //indexList.addAll(arrayToList(checkNumNeigh(list)));
+            //return indexList;
         }
     }
 
-    private List<Integer> arrayToList(int[] array) {
+    private List<Cell> checkNeighNum(int[] list) {
+        List<Cell> returnList = new ArrayList<>();
+        List<Cell> allCells = MINESWEEPER.getAllCells();
+        for (int i = 0; i < list.length; i++) {
+            if (!allCells.get(list[i]).isMine() && allCells.get(list[i]).getNumOfNeighbourMines() == 0 && !allCells.get(list[i]).isSeen()) {
+                returnList.add(allCells.get(list[i]));
+            }
+        }
+        return returnList;
+    }
+
+    /*private List<Integer> arrayToList(int[] array) {
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < array.length; i++) {
             list.add(i);
         }
         return list;
     }
+    */
 
-    private int[] checkNumNeigh(int[] list) {
+    /*private int[] checkNumNeigh(int[] list) {
         int[] returnList;
         returnList = new int[list.length];
         List<Cell> allCells = MINESWEEPER.getAllCells();
@@ -198,14 +260,13 @@ public class GamePanel extends JPanel implements MouseListener {
             }
         }
         return returnList;
-    }
+    }*/
 
-    private void setCellsVisable(List<Integer> list) {
-        List<Cell> allCells = MINESWEEPER.getAllCells();
-        for (int i = 0; i < list.size(); i++) {
-            if (!allCells.get(list.get(i)).isMine() && allCells.get(list.get(i)).getNumOfNeighbourMines() >= 0) {
-                cellPanelList.get(list.get(i)).setNumCellvisible();
-                allCells.get(list.get(i)).setSeen(true);
+    private void setCellVisable(Cell cell) {
+        int index = cell.getINDEX();
+        for (int i = 0; i < cellPanelList.size(); i++) {
+            if (cellPanelList.get(i).getIndex() == index) {
+                cellPanelList.get(i).setNumCellvisible();
             }
         }
     }
