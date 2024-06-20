@@ -214,11 +214,17 @@ public class GamePanel extends JPanel implements MouseListener {
         }
     }
     private void endOfGame() {
+        //TODO: add pop up window to restart a game
         for (CellPanel panel : cellPanelList) {
             panel.setNumCellvisible();
             panel.setMineVisible();
         }
+        startNewGame("Game ended! ");
         // popup window to show
+    }
+
+    private void startNewGame(String prompt){
+        JOptionPane.showMessageDialog(null, prompt);
     }
 
     @Override

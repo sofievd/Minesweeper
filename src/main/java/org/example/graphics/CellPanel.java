@@ -9,11 +9,12 @@ import java.awt.*;
 public class CellPanel extends JPanel {
     int index;
     private final JTextArea mineText = new JTextArea("M");
-    private JTextArea flag = new JTextArea("F");
+    private JTextArea flagText = new JTextArea("F");
     private JTextArea numNeigh;
     private JTextArea defaultText = new JTextArea("");
 
     boolean mine;
+    boolean flag;
 
     public CellPanel(int index) {
         this.setBackground(Color.LIGHT_GRAY);
@@ -31,10 +32,6 @@ public class CellPanel extends JPanel {
         defaultText.setVisible(true);
         defaultText.setEditable(false);
         add(defaultText);
-    }
-
-    public boolean isMine() {
-        return mine;
     }
 
     public void setMine(boolean mine) {
@@ -69,9 +66,11 @@ public class CellPanel extends JPanel {
     }
 
     public void setMineVisible() {
-        mineText.setForeground(Color.RED);
-        mineText.setVisible(true);
-
+        if(!flag){
+            mineText.setForeground(Color.RED);
+            mineText.setVisible(true);
+        }
+        flagText.setForeground(Color.GREEN);
     }
 
     public void setFlag() {
@@ -79,20 +78,23 @@ public class CellPanel extends JPanel {
         //mineText.setVisible(false);
         defaultText.setVisible(false);
 
-        flag.setBackground(Color.WHITE);
-        flag.setEditable(false);
-        flag.setForeground(Color.green);
+        flagText.setBackground(Color.WHITE);
+        flagText.setEditable(false);
+        flagText.setForeground(Color.BLUE);
 
-        this.add(flag);
-        flag.setVisible(true);
-        repaint(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+        this.add(flagText);
+        flagText.setVisible(true);
+        flag = true;
+
+       // repaint(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 
     }
 
     public void removeFlag() {
         this.setBackground(Color.LIGHT_GRAY);
-        flag.setVisible(false);
+        flagText.setVisible(false);
         System.out.println("remove flag");
+        flag = false;
         setDefaultText();
     }
 }
