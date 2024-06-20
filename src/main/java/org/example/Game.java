@@ -41,7 +41,6 @@ public class Game {
         return allCells;
     }
 
-
     private void createMines() {
         // as long as not all the mines are set:
         // skapa en random row and column number
@@ -61,11 +60,10 @@ public class Game {
             }
         }
     }
-
     private void setNeighbeourghMines() {
 
         for (Cell mines : mineCells) {
-            int index = mines.INDEX;
+            int index = mines.getINDEX();
 
             // check all corners
             if (index == 0) {
@@ -133,8 +131,6 @@ public class Game {
         }
 
     }
-
-
     private void setNeighbeourghMines(int index) {
         for (Cell cell : allCells) {
             if (cell.getINDEX() == index) {
@@ -146,8 +142,6 @@ public class Game {
             }
         }
     }
-
-
     private int createRandomIntInRange(int min, int max) {
         return (int) (Math.random() * (max - min)) + min;
     }
@@ -155,7 +149,6 @@ public class Game {
     public List<Cell> getAllCells() {
         return allCells;
     }
-
     public List<Cell> getMineCells() {
         return mineCells;
     }
