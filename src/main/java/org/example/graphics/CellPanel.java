@@ -22,9 +22,6 @@ public class CellPanel extends JPanel {
         Border greyLine = BorderFactory.createLineBorder(Color.DARK_GRAY);
         this.setBorder(greyLine);
         this.index = index;
-        //JTextArea indexNum = new JTextArea(""+index);
-        //indexNum.setEditable(false);
-        //this.add(indexNum);
     }
 
     private void setDefaultText() {
